@@ -1,6 +1,6 @@
 let songs = [
   {
-    name: "Let Me Down Slowly",
+    name: "𝕃𝕖𝕥 𝕄𝕖 𝔻𝕠𝕨𝕟 𝕊𝕝𝕠𝕨𝕝𝕪",
     artist: "Alec Benjamin",
     img: "img1",
     audio: "music1"
@@ -22,5 +22,11 @@ let songs = [
     artist: "Shawn Mendes, Camila Cabello",
     img: "img4",
     audio: "music4"
+  },
+    {
+    name: "Bad Liar",
+    artist: "Imagine Dragons",
+    img: "img5",
+    audio: "music5"
   }
 ]
