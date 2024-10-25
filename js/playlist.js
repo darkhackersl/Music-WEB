@@ -45,6 +45,6 @@ let songs = [
     name: "Friends.",
     artist: "Marshmello - Anne Marie",
     img: "img8",
-    audio: ""
+    audio: "Marshmello & Anne-Marie - FRIENDS (Lyrics)"
   }
 ]
