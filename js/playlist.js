@@ -28,5 +28,11 @@ let songs = [
     artist: "Imagine Dragons",
     img: "img5",
     audio: "music5"
+  },
+   {
+    name: "MOOD - Lofi",
+    artist: "Thenu-X",
+    img: "img6",
+    audio: "Mood (Lofi)"
   }
 ]
