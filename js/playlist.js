@@ -34,5 +34,17 @@ let songs = [
     artist: "Thenu-X",
     img: "img6",
     audio: "Mood (Lofi)"
+  },
+     {
+    name: "Loosing My Mind",
+    artist: "Bazzi",
+    img: "img7",
+    audio: "Bazzi - I Think I'm Losing My Mind (Myself) (Lyrics)"
+  },
+   {
+    name: "Friends.",
+    artist: "Marshmello - Anne Marie",
+    img: "img8",
+    audio: ""
   }
 ]
