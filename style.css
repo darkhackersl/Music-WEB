@@ -36,6 +36,7 @@ body{
   align-items: center;
   justify-content: space-between;
   font-size: 18px;
+  color: #4d4d4d;
 }
 
 .top-bar .material-symbols-rounded{
