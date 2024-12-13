@@ -202,13 +202,13 @@
             }
 
             try {
-                const response = await fetch(`https://api.example.com/findSongs?query=${encodeURIComponent(query)}`); // Replace with actual API
+                const result = await fetch(`https://www.dark-yasiya-api.site/download/ytmp3?url=${encodeURIComponent(query)}`); // Replace with actual API
                 if (!response.ok) {
                     throw new Error('Failed to fetch songs.');
                 }
 
-                const data = await response.json();
-                if (data.songs && data.songs.length > 0) {
+                const result = await response.json();
+                if (result.dl_link && result.dl_link.length > 0) {
                     data.songs.forEach(song => {
                         const songItem = document.createElement('div');
                         songItem.className = 'song-item';
