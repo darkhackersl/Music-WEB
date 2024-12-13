@@ -107,7 +107,7 @@
                 }
 
                 const data = await response.json();
-                if (data.lyrics) {
+                if (result.result.lyrics) {
                     lyricsContainer.innerHTML = `<pre>${data.lyrics}</pre>`;
                     lyricsContainer.style.display = 'block';
                 } else {
