@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music-WEB Lyrics Finder</title>
+    <title>Music-WEB Lyrics & Songs Finder</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,18 +14,27 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: flex-start;
+            min-height: 100vh;
         }
 
         h1 {
-            margin-bottom: 20px;
+            margin-top: 20px;
             text-align: center;
             animation: slideIn 1s ease-out;
         }
 
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
         .search-container {
-            margin-bottom: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -34,8 +43,7 @@
 
         #searchInput {
             padding: 10px;
-            width: 90%;
-            max-width: 300px;
+            width: 100%;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
@@ -47,7 +55,7 @@
             box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
         }
 
-        #searchButton {
+        .button {
             margin-top: 10px;
             padding: 10px 20px;
             background-color: #4caf50;
@@ -58,50 +66,32 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        #searchButton:hover {
+        .button:hover {
             background-color: #45a049;
             transform: scale(1.05);
         }
 
-        .search-options {
-            margin-top: 10px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .search-options button {
-            padding: 10px 15px;
-            background: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .search-options button:hover {
-            background: #0056b3;
-            transform: scale(1.1);
-        }
-
-        #lyrics {
+        #songs {
             margin-top: 20px;
-            padding: 20px;
+            padding: 10px;
             background: white;
             border-radius: 10px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 90%;
-            width: 600px;
             animation: fadeIn 0.5s ease;
-            word-wrap: break-word;
+            display: none;
         }
 
-        #loading {
-            font-size: 16px;
-            color: #888;
-            animation: pulse 1s infinite;
+        .song-item {
+            margin-bottom: 10px;
+        }
+
+        .song-item a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .song-item a:hover {
+            text-decoration: underline;
         }
 
         @keyframes fadeIn {
@@ -124,110 +114,115 @@
             }
         }
 
-        @keyframes pulse {
-            0% {
-                opacity: 0.5;
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0.5;
-            }
-        }
-
         @media (max-width: 768px) {
-            body {
-                padding: 20px;
-                justify-content: flex-start;
-            }
-
             h1 {
                 font-size: 24px;
             }
 
-            #lyrics {
-                font-size: 14px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 20px;
+            .container {
+                padding: 10px;
             }
 
             #searchInput {
                 font-size: 14px;
             }
 
-            #searchButton {
+            .button {
                 font-size: 14px;
-                padding: 8px 16px;
-            }
-
-            .search-options button {
-                font-size: 12px;
-                padding: 5px 10px;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Lyrics Finder</h1>
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Enter song title or lyrics snippet">
-        <button id="searchButton">Find Lyrics</button>
-        <div class="search-options">
-            <button onclick="quickSearch('Shape of You')">Shape of You</button>
-            <button onclick="quickSearch('Blinding Lights')">Blinding Lights</button>
-            <button onclick="quickSearch('Bad Habits')">Bad Habits</button>
-            <button onclick="quickSearch('Levitating')">Levitating</button>
+    <h1>Music Finder</h1>
+
+    <div class="container">
+        <h2>Lyrics Finder</h2>
+        <div class="search-container">
+            <input type="text" id="searchInputLyrics" placeholder="Enter song title or lyrics snippet">
+            <button class="button" id="searchButtonLyrics">Find Lyrics</button>
         </div>
+        <div id="lyrics" style="display: none; margin-top: 10px;"></div>
     </div>
-    <div id="loading" style="display: none;">Loading...</div>
-    <div id="lyrics" style="display: none;"></div>
+
+    <div class="container">
+        <h2>Find Songs</h2>
+        <div class="search-container">
+            <input type="text" id="searchInputSongs" placeholder="Enter song or artist name">
+            <button class="button" id="searchButtonSongs">Find Songs</button>
+        </div>
+        <div id="songs"></div>
+    </div>
 
     <script>
-        document.getElementById('searchButton').addEventListener('click', () => {
-            searchLyrics(document.getElementById('searchInput').value);
-        });
-
-        function quickSearch(query) {
-            document.getElementById('searchInput').value = query;
+        // Lyrics Finder
+        document.getElementById('searchButtonLyrics').addEventListener('click', () => {
+            const query = document.getElementById('searchInputLyrics').value;
             searchLyrics(query);
-        }
+        });
 
         async function searchLyrics(query) {
             const lyricsContainer = document.getElementById('lyrics');
-            const loadingIndicator = document.getElementById('loading');
+            lyricsContainer.style.display = 'none';
 
             if (!query.trim()) {
-                alert('Please enter a search query.');
+                alert('Please enter a search query for lyrics.');
                 return;
             }
-
-            lyricsContainer.style.display = 'none';
-            loadingIndicator.style.display = 'block';
 
             try {
                 const response = await fetch(`https://www.dark-yasiya-api.site/other/lyrics?text=${encodeURIComponent(query)}`);
                 if (!response.ok) {
-                    throw new Error('Failed to fetch lyrics. Please try again later.');
+                    throw new Error('Failed to fetch lyrics.');
                 }
 
                 const result = await response.json();
-                if (result.result) {
-                    lyricsContainer.innerHTML = `<pre>${result.result.lyric}</pre>`;
-                    lyricsContainer.style.display = 'block';
-                } else {
-                    lyricsContainer.innerHTML = '<p>No lyrics found for your query.</p>';
-                    lyricsContainer.style.display = 'block';
-                }
+                lyricsContainer.innerHTML = result.result ? `<pre>${.resultresult.lyric}</pre>` : '<p>No lyrics found.</p>';
+                lyricsContainer.style.display = 'block';
             } catch (error) {
                 lyricsContainer.innerHTML = `<p>Error: ${error.message}</p>`;
                 lyricsContainer.style.display = 'block';
-            } finally {
-                loadingIndicator.style.display = 'none';
+            }
+        }
+
+        // Song Finder
+        document.getElementById('searchButtonSongs').addEventListener('click', () => {
+            const query = document.getElementById('searchInputSongs').value;
+            searchSongs(query);
+        });
+
+        async function searchSongs(query) {
+            const songsContainer = document.getElementById('songs');
+            songsContainer.innerHTML = '';
+            songsContainer.style.display = 'none';
+
+            if (!query.trim()) {
+                alert('Please enter a search query for songs.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.example.com/findSongs?query=${encodeURIComponent(query)}`); // Replace with actual API
+                if (!response.ok) {
+                    throw new Error('Failed to fetch songs.');
+                }
+
+                const data = await response.json();
+                if (data.songs && data.songs.length > 0) {
+                    data.songs.forEach(song => {
+                        const songItem = document.createElement('div');
+                        songItem.className = 'song-item';
+                        songItem.innerHTML = `<a href="${song.url}" target="_blank">${song.title} by ${song.artist}</a>`;
+                        songsContainer.appendChild(songItem);
+                    });
+                    songsContainer.style.display = 'block';
+                } else {
+                    songsContainer.innerHTML = '<p>No songs found.</p>';
+                    songsContainer.style.display = 'block';
+                }
+            } catch (error) {
+                songsContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+                songsContainer.style.display = 'block';
             }
         }
     </script>
