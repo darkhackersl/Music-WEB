@@ -184,42 +184,110 @@
                 lyricsContainer.style.display = 'block';
             }
         }
+// Add this to your main JavaScript file or a new API service file
 
-        // Song Finder
-        document.getElementById('searchButtonSongs').addEventListener('click', () => {
-            const query = document.getElementById('searchInputSongs').value;
-            searchSongs(query);
-        });
+class MusicDownloadService {
+    constructor() {
+        this.apiBaseUrl = 'https://www.dark-yasiya-api.site/download/ytmp3';
+    }
 
-        async function searchSongs(query) {
-            const songsContainer = document.getElementById('songs');
-            songsContainer.innerHTML = '';
-            songsContainer.style.display = 'none';
-
-            if (!query.trim()) {
-                alert('Please enter a search query for songs.');
-                return;
+    async searchAndDownloadSong(youtubeUrl) {
+        try {
+            // Validate YouTube URL
+            if (!this.isValidYouTubeURL(youtubeUrl)) {
+                throw new Error('Invalid YouTube URL');
             }
 
-            try {
-                const result = await fetch(`https://www.dark-yasiya-api.site/download/ytmp3?url=${encodeURIComponent(query)}`); // Replace with actual API
-                if (!response.ok) {
-                    throw new Error('Failed to fetch songs.');
-                }
+            // Construct full API endpoint
+            const apiEndpoint = `${this.apiBaseUrl}?url=${encodeURIComponent(youtubeUrl)}`;
 
-                const result = await response.json();
-                if (result.dl_link && result.dl_link.length > 0) {
-                    data.songs.forEach(song => {
-                        const songItem = document.createElement('div');
-                        songItem.className = 'song-item';
-                        songItem.innerHTML = `<a href="${song.url}" target="_blank">${song.title} by ${song.artist}</a>`;
-                        songsContainer.appendChild(songItem);
-                    });
-                    songsContainer.style.display = 'block';
-                } else {
-                    songsContainer.innerHTML = '<p>No songs found.</p>';
-                    songsContainer.style.display = 'block';
+            // Fetch song download details
+            const response = await fetch(apiEndpoint, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
                 }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch song download details');
+            }
+
+            const songData = await response.json();
+
+            return {
+                title: songData.title,
+                artist: songData.artist || 'Unknown Artist',
+                downloadLink: songData.downloadLink,
+                thumbnail: songData.thumbnail,
+                duration: songData.duration
+            };
+
+        } catch (error) {
+            console.error('Song download error:', error);
+            throw error;
+        }
+    }
+
+    isValidYouTubeURL(url) {
+        // Basic YouTube URL validation
+        const youtubeRegex = /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/;
+        return youtubeRegex.test(url);
+    }
+}
+
+// Usage example
+class MusicPlayer {
+    constructor() {
+        this.downloadService = new MusicDownloadService();
+    }
+
+    async downloadSong(youtubeUrl) {
+        try {
+            const songDetails = await this.downloadService.searchAndDownloadSong(youtubeUrl);
+            
+            // Create audio element
+            const audioElement = new Audio(songDetails.downloadLink);
+            
+            // Optional: Update UI with song details
+            this.updatePlayerUI(songDetails);
+
+            return songDetails;
+        } catch (error) {
+            console.error('Download failed:', error);
+            // Handle error (show user-friendly message)
+        }
+    }
+
+    updatePlayerUI(songDetails) {
+        // Update UI elements with song information
+        document.getElementById('songTitle').textContent = songDetails.title;
+        document.getElementById('songArtist').textContent = songDetails.artist;
+        document.getElementById('songThumbnail').src = songDetails.thumbnail;
+    }
+}
+
+// HTML Example
+/*
+<div id="musicDownloader">
+    <input type="text" id="youtubeUrlInput" placeholder="Enter YouTube URL">
+    <button onclick="downloadSong()">Download Song</button>
+
+    <div id="playerContainer">
+        <img id="songThumbnail" />
+        <h3 id="songTitle">Song Title</h3>
+        <p id="songArtist">Artist Name</p>
+        <audio id="audioPlayer" controls></audio>
+    </div>
+</div>
+*/
+
+// Event Listener
+function downloadSong() {
+    const youtubeUrl = document.getElementById('youtubeUrlInput').value;
+    const musicPlayer = new MusicPlayer();
+    musicPlayer.downloadSong(youtubeUrl);
+}
             } catch (error) {
                 songsContainer.innerHTML = `<p>Error: ${error.message}</p>`;
                 songsContainer.style.display = 'block';
