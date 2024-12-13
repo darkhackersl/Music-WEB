@@ -63,6 +63,29 @@
             transform: scale(1.05);
         }
 
+        .search-options {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .search-options button {
+            padding: 10px 15px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .search-options button:hover {
+            background: #0056b3;
+            transform: scale(1.1);
+        }
+
         #lyrics {
             margin-top: 20px;
             padding: 20px;
@@ -141,6 +164,11 @@
                 font-size: 14px;
                 padding: 8px 16px;
             }
+
+            .search-options button {
+                font-size: 12px;
+                padding: 5px 10px;
+            }
         }
     </style>
 </head>
@@ -149,13 +177,27 @@
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Enter song title or lyrics snippet">
         <button id="searchButton">Find Lyrics</button>
+        <div class="search-options">
+            <button onclick="quickSearch('Shape of You')">Shape of You</button>
+            <button onclick="quickSearch('Blinding Lights')">Blinding Lights</button>
+            <button onclick="quickSearch('Bad Habits')">Bad Habits</button>
+            <button onclick="quickSearch('Levitating')">Levitating</button>
+        </div>
     </div>
     <div id="loading" style="display: none;">Loading...</div>
     <div id="lyrics" style="display: none;"></div>
 
     <script>
-        document.getElementById('searchButton').addEventListener('click', async () => {
-            const query = document.getElementById('searchInput').value;
+        document.getElementById('searchButton').addEventListener('click', () => {
+            searchLyrics(document.getElementById('searchInput').value);
+        });
+
+        function quickSearch(query) {
+            document.getElementById('searchInput').value = query;
+            searchLyrics(query);
+        }
+
+        async function searchLyrics(query) {
             const lyricsContainer = document.getElementById('lyrics');
             const loadingIndicator = document.getElementById('loading');
 
@@ -187,8 +229,7 @@
             } finally {
                 loadingIndicator.style.display = 'none';
             }
-        });
+        }
     </script>
 </body>
 </html>
-
