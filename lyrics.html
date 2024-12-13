@@ -20,6 +20,8 @@
 
         h1 {
             margin-bottom: 20px;
+            text-align: center;
+            animation: slideIn 1s ease-out;
         }
 
         .search-container {
@@ -27,14 +29,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            animation: fadeIn 1.5s ease-out;
         }
 
         #searchInput {
             padding: 10px;
-            width: 300px;
+            width: 90%;
+            max-width: 300px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        #searchInput:focus {
+            box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
         }
 
         #searchButton {
@@ -45,11 +55,12 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         #searchButton:hover {
             background-color: #45a049;
+            transform: scale(1.05);
         }
 
         #lyrics {
@@ -58,13 +69,16 @@
             background: white;
             border-radius: 10px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            max-width: 90%;
+            width: 600px;
             animation: fadeIn 0.5s ease;
+            word-wrap: break-word;
         }
 
         #loading {
             font-size: 16px;
             color: #888;
+            animation: pulse 1s infinite;
         }
 
         @keyframes fadeIn {
@@ -73,6 +87,59 @@
             }
             to {
                 opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.5;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+                justify-content: flex-start;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            #lyrics {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            #searchInput {
+                font-size: 14px;
+            }
+
+            #searchButton {
+                font-size: 14px;
+                padding: 8px 16px;
             }
         }
     </style>
@@ -124,3 +191,4 @@
     </script>
 </body>
 </html>
+
