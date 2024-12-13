@@ -108,7 +108,7 @@
 
                 const data = await response.json();
                 if (result.result) {
-                    lyricsContainer.innerHTML = `<pre>${result.result.lyrics}</pre>`;
+                    lyricsContainer.innerHTML = `<pre>${result.lyrics}</pre>`;
                     lyricsContainer.style.display = 'block';
                 } else {
                     lyricsContainer.innerHTML = '<p>No lyrics found for your query.</p>';
