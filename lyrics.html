@@ -177,7 +177,7 @@
                 }
 
                 const result = await response.json();
-                lyricsContainer.innerHTML = result.result ? `<pre>${.resultresult.lyric}</pre>` : '<p>No lyrics found.</p>';
+                lyricsContainer.innerHTML = result.result ? `<pre>${result.result.lyric}</pre>` : '<p>No lyrics found.</p>';
                 lyricsContainer.style.display = 'block';
             } catch (error) {
                 lyricsContainer.innerHTML = `<p>Error: ${error.message}</p>`;
