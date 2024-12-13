@@ -106,7 +106,7 @@
                     throw new Error('Failed to fetch lyrics. Please try again later.');
                 }
 
-                const data = await response.json();
+                const result = await response.json();
                 if (result.result) {
                     lyricsContainer.innerHTML = `<pre>${result.lyric}</pre>`;
                     lyricsContainer.style.display = 'block';
